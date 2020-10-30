@@ -140,11 +140,13 @@ void dibujarGrafo()
         
         int router = 0;
  		int c=1;
- 		
+ 	
+	printf("\nAhora ingresara las aristas y los pesos de los routers");
+        printf("\nLas aristas deben ser ingresadas con espacios (por ejemplo: 0 1 representa la arista del router 0 al 1)\n");
+	
         for(i=1;i<=max_edges;i++)
         {
-        		printf("\nAhora ingresara las aristas y los pesos de los routers");
-        		printf("\nLas aristas deben ser ingresadas con espacios (por ejemplo: 0 1 representa la arista del router 0 al 1)\n");
+     
                 printf("\nIngrese los lados del router %d: ",router);
                 scanf("%d %d",&origin,&destin);
                 if(c==n-1){
