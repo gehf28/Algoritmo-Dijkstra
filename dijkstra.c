@@ -13,7 +13,7 @@ void dibujarGrafo();
  
 int n;    // Número de routers
 int matriz[MAX][MAX]; //Matriz de Adyacencia donde se guardan los costos
-int predecessor[MAX];   /*predecessor of each vertex in shortest path*/
+int predecessor[MAX];   //predecesor de cada vértice en el camino más corto
 int pathLength[MAX];
 int status[MAX];
  
@@ -23,7 +23,7 @@ int main()
  
         dibujarGrafo();
  
-        printf("\nIngrece el router de origen: ");
+        printf("\nIngrese el router de origen: ");
         scanf("%d",&routOrigen);
  
         Dijkstra(routOrigen);
@@ -50,21 +50,19 @@ int main()
 void Dijkstra( int routOrigen)
 {
         int i,current;
- 
-        /* Make all vertices temporary */
+
         for(i=0; i<n; i++)
         {
                 predecessor[i] =  NIL;
                 pathLength[i] = infinity;
                 status[i] = TEMP; //0 si aun no pasa
         }
-        /* Make pathLength of source vertex equal to 0 */
+        //Inicializar en 0 la posicion del router origen en el arreglo pathLengt
         pathLength[routOrigen] = 0;
  
         while(1)
         {
-                /*Search for temporary vertex with minimum pathLength
-                and make it current vertex*/
+                //Buscar el nodo temporal con minima longitud de camino
                 current = min_temp( );
  
                 if( current == NIL )
@@ -74,20 +72,19 @@ void Dijkstra( int routOrigen)
  
                 for(i=0; i<n; i++)
                 {
-                        /*Checks for adjacent temporary vertices */
+                        
                         if ( matriz[current][i] !=0 && status[i] == TEMP )
                                 if( pathLength[current] + matriz[current][i] < pathLength[i] )
                                 {
-                                        predecessor[i] = current;  /*Relabel*/
+                                        predecessor[i] = current;  
                                         pathLength[i] = pathLength[current] + matriz[current][i];
                                 }
                 }
         }
 }
  
-/*Returns the temporary vertex with minimum value of pathLength
-  Returns NIL if no temporary vertex left or
-  all temporary vertices left have pathLength infinity*/
+//Retorna el vértice temporal con el valor mínimo de pathLength
+
 int min_temp( )
 {
         int i;
@@ -108,12 +105,11 @@ int min_temp( )
 void buscarCamino(int routOrigen, int routDestino)
 {
         int i,u;
-        int camino[MAX];          /*se almacenan los nodos del camino mas corto*/
-        int shortdist = 0;      /*length of shortest path (costo)*/
-        int contador = 0;          /*number of vertices in the shortest path*/
- 
-        /*Store the full path in the array path*/
-        while( routDestino != routOrigen ) //bucle de atras hacia adelante 
+        int camino[MAX];          //Se almacenan los nodos del camino mas corto
+        int shortdist = 0;        //Se almacena el costo
+        int contador = 0;         //Numero de routers en el camino mas corto
+
+        while( routDestino != routOrigen )
         {
                 contador++;
                 camino[contador] = routDestino;
