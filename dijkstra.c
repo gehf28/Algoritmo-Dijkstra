@@ -6,13 +6,13 @@
 #define infinity 9999
 #define NIL -1
  
-void findPath(int routOrigen, int routDestino);
+void buscarCamino(int routOrigen, int routDestino);
 void Dijkstra( int routOrigen);
 int min_temp( );
-void create_graph();
+void dibujarGrafo();
  
 int n;    /* Denotes number of vertices in the graph */
-int adj[MAX][MAX];
+int matriz[MAX][MAX];
 int predecessor[MAX];   /*predecessor of each vertex in shortest path*/
 int pathLength[MAX];
 int status[MAX];
@@ -21,7 +21,7 @@ int main()
 {
         int routOrigen,routDestino;
  
-        create_graph();
+        dibujarGrafo();
  
         printf("\nIngrece el router de origen: ");
         scanf("%d",&routOrigen);
@@ -30,18 +30,18 @@ int main()
  
         while(1)
         {
-                printf("\nEnter destination vertex(-1 to quit): ");
+                printf("\nIngrese el router de destino (-1 to quit): ");
                 scanf("%d",&routDestino);
                 if(routDestino == -1)
                         break;
                 if(routDestino < 0 || routDestino >= n )
-                        printf("\nThis vertex does not exist\n");
+                        printf("\nEl router no existe\n");
                 else if(routDestino == routOrigen)
-                        printf("\nSource and destination vertices are same\n");
+                        printf("\nRouter de origen y destino son iguales\n");
                 else if( pathLength[routDestino] == infinity )
-                        printf("\nThere is no path from source to destination vertex\n");
+            printf("\nNo hay camino para este destino\n");
                 else
-                        findPath(routOrigen,routDestino);
+                        buscarCamino(routOrigen,routDestino);
         }
  
         return 0;
@@ -56,7 +56,7 @@ void Dijkstra( int routOrigen)
         {
                 predecessor[i] =  NIL;
                 pathLength[i] = infinity;
-                status[i] = TEMP;
+                status[i] = TEMP; //0 si aun no pasa
         }
         /* Make pathLength of source vertex equal to 0 */
         pathLength[routOrigen] = 0;
@@ -70,16 +70,16 @@ void Dijkstra( int routOrigen)
                 if( current == NIL )
                         return;
  
-                status[current] = PERM;
+                status[current] = PERM; //1 ya paso
  
                 for(i=0; i<n; i++)
                 {
                         /*Checks for adjacent temporary vertices */
-                        if ( adj[current][i] !=0 && status[i] == TEMP )
-                                if( pathLength[current] + adj[current][i] < pathLength[i] )
+                        if ( matriz[current][i] !=0 && status[i] == TEMP )
+                                if( pathLength[current] + matriz[current][i] < pathLength[i] )
                                 {
                                         predecessor[i] = current;  /*Relabel*/
-                                        pathLength[i] = pathLength[current] + adj[current][i];
+                                        pathLength[i] = pathLength[current] + matriz[current][i];
                                 }
                 }
         }
@@ -105,46 +105,47 @@ int min_temp( )
 }/*End of min_temp( )*/
  
  
-void findPath(int routOrigen, int routDestino)
+void buscarCamino(int routOrigen, int routDestino)
 {
         int i,u;
-        int path[MAX];          /*stores the shortest path (nodos)*/
+        int camino[MAX];          /*stores the shortest path (nodos)*/
         int shortdist = 0;      /*length of shortest path (costo)*/
-        int count = 0;          /*number of vertices in the shortest path*/
+        int contador = 0;          /*number of vertices in the shortest path*/
  
         /*Store the full path in the array path*/
         while( routDestino != routOrigen ) //bucle de atras hacia adelante 
         {
-                count++;
-                path[count] = routDestino;
+                contador++;
+                camino[contador] = routDestino;
                 u = predecessor[routDestino];
-                shortdist += adj[u][routDestino];
+                shortdist += matriz[u][routDestino];
                 routDestino = u;
         }
-        count++;
-        path[count]=routOrigen;
+        contador++;
+        camino[contador]=routOrigen;
  
-        printf("\nShortest Path is : ");
-        for(i=count; i>=1; i--)
-                printf("%d  ",path[i]);
-        printf("\nShortest distance is : %d\n", shortdist);
-}/*End of findPath()*/
+        printf("\nEl camino mas corto es: ");
+        for(i=contador; i>=1; i--)
+                printf("%d  ",camino[i]);
+        printf("\nLa distancia mas corta es: %d\n", shortdist);
+}/*End of buscarCamino()*/
  
-void create_graph()
+void dibujarGrafo()
 {
         int i,max_edges,origin,destin, wt;
  
-        printf("\nEnter number of vertices : ");
+        printf("\nIngrese el número de routers: ");
         scanf("%d",&n);
         max_edges = n*(n-1);
         
         int router = 0;
- 		    int c=1;
+ 		int c=1;
  		
         for(i=1;i<=max_edges;i++)
         {
-        		
-                printf("\nIngrese el lado del router %d ( -1 -1 to quit ) : ",router);
+        		printf("\nAhora ingresara las aristas y los pesos de los routers");
+        		printf("\nLas aristas deben ser ingresadas con espacios (por ejemplo: 0 1 representa la arista del router 0 al 1)\n");
+                printf("\nIngrese los lados del router %d: ",router);
                 scanf("%d %d",&origin,&destin);
                 if(c==n-1){
                 	c=1;
@@ -157,15 +158,15 @@ void create_graph()
                 if( (origin == -1) && (destin == -1) )
                         break;
  
-                printf("\nEnter weight for this edge : ");
+                printf("\nIngrese el peso de la arista: ");
                 scanf("%d",&wt);
  
                 if( origin >= n || destin >= n || origin<0 || destin<0)
                 {
-                        printf("\nInvalid edge!\n");
+                        printf("\nArista Invalida!\n");
                         i--;
                 }
                 else
-                        adj[origin][destin] = wt;
+                        matriz[origin][destin] = wt;
         }
 }
