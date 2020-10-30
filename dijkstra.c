@@ -11,8 +11,8 @@ void Dijkstra( int routOrigen);
 int min_temp( );
 void dibujarGrafo();
  
-int n;    /* Denotes number of vertices in the graph */
-int matriz[MAX][MAX];
+int n;    // Número de routers
+int matriz[MAX][MAX]; //Matriz de Adyacencia donde se guardan los costos
 int predecessor[MAX];   /*predecessor of each vertex in shortest path*/
 int pathLength[MAX];
 int status[MAX];
@@ -30,7 +30,7 @@ int main()
  
         while(1)
         {
-                printf("\nIngrese el router de destino (-1 to quit): ");
+                printf("\nIngrese el router de destino: ");
                 scanf("%d",&routDestino);
                 if(routDestino == -1)
                         break;
@@ -45,7 +45,7 @@ int main()
         }
  
         return 0;
-}/*End of main()*/
+}
  
 void Dijkstra( int routOrigen)
 {
@@ -83,7 +83,7 @@ void Dijkstra( int routOrigen)
                                 }
                 }
         }
-}/*End of Dijkstra( )*/
+}
  
 /*Returns the temporary vertex with minimum value of pathLength
   Returns NIL if no temporary vertex left or
@@ -102,13 +102,13 @@ int min_temp( )
                 }
         }
         return k;
-}/*End of min_temp( )*/
+}
  
  
 void buscarCamino(int routOrigen, int routDestino)
 {
         int i,u;
-        int camino[MAX];          /*stores the shortest path (nodos)*/
+        int camino[MAX];          /*se almacenan los nodos del camino mas corto*/
         int shortdist = 0;      /*length of shortest path (costo)*/
         int contador = 0;          /*number of vertices in the shortest path*/
  
@@ -128,7 +128,7 @@ void buscarCamino(int routOrigen, int routDestino)
         for(i=contador; i>=1; i--)
                 printf("%d  ",camino[i]);
         printf("\nLa distancia mas corta es: %d\n", shortdist);
-}/*End of buscarCamino()*/
+}
  
 void dibujarGrafo()
 {
